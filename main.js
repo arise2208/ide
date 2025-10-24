@@ -270,7 +270,7 @@ async function setupIpcHandlers() {
         title: 'Select Project Folder',
         buttonLabel: 'Open Folder',
       })
-      
+
       if (result.canceled) {
         return { success: true, data: null }
       }
@@ -279,14 +279,83 @@ async function setupIpcHandlers() {
   // remember opened project root for Competitive Companion imports
   selectedProjectRoot = selectedPath
       const fileTree = await getFileTree(selectedPath)
-      
-      return { 
-        success: true, 
+
+      return {
+        success: true,
         data: {
           rootPath: selectedPath,
           files: fileTree
         }
       }
+    } catch (error) {
+      return { success: false, error: error.message }
+    }
+  })
+
+  // Create new file
+  ipcMain.handle('file:create', async (_, { filePath, isDirectory }) => {
+    try {
+      if (!isPathSafe(filePath)) {
+        throw new Error('Invalid path')
+      }
+
+      if (isDirectory) {
+        await fs.mkdir(filePath, { recursive: true })
+      } else {
+        const dirPath = path.dirname(filePath)
+        await fs.mkdir(dirPath, { recursive: true })
+        await fs.writeFile(filePath, '', 'utf8')
+      }
+
+      return { success: true }
+    } catch (error) {
+      return { success: false, error: error.message }
+    }
+  })
+
+  // Delete file or folder
+  ipcMain.handle('file:delete', async (_, filePath) => {
+    try {
+      if (!isPathSafe(filePath)) {
+        throw new Error('Invalid path')
+      }
+
+      const stats = await fs.stat(filePath)
+      if (stats.isDirectory()) {
+        await fs.rm(filePath, { recursive: true, force: true })
+      } else {
+        await fs.unlink(filePath)
+      }
+
+      return { success: true }
+    } catch (error) {
+      return { success: false, error: error.message }
+    }
+  })
+
+  // Rename file or folder
+  ipcMain.handle('file:rename', async (_, { oldPath, newPath }) => {
+    try {
+      if (!isPathSafe(oldPath) || !isPathSafe(newPath)) {
+        throw new Error('Invalid path')
+      }
+
+      await fs.rename(oldPath, newPath)
+      return { success: true }
+    } catch (error) {
+      return { success: false, error: error.message }
+    }
+  })
+
+  // Cut (move) file or folder
+  ipcMain.handle('file:cut', async (_, { sourcePath, destPath }) => {
+    try {
+      if (!isPathSafe(sourcePath) || !isPathSafe(destPath)) {
+        throw new Error('Invalid path')
+      }
+
+      await fs.rename(sourcePath, destPath)
+      return { success: true }
     } catch (error) {
       return { success: false, error: error.message }
     }

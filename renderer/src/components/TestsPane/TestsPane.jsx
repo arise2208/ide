@@ -67,7 +67,6 @@ const TestCard = ({ test, onFieldChange, onRun, onDelete, result, running, testN
           className={styles.input}
           value={test.input}
           onChange={(e) => onFieldChange(test.id, 'input', e.target.value)}
-          rows={2}
         />
 
         <label className={styles.label}>Expected</label>
@@ -75,15 +74,14 @@ const TestCard = ({ test, onFieldChange, onRun, onDelete, result, running, testN
           className={styles.input}
           value={test.expected}
           onChange={(e) => onFieldChange(test.id, 'expected', e.target.value)}
-          rows={2}
         />
 
         {result ? (
-          <div style={{ marginTop: 8, background: '#111', padding: 8, borderRadius: 4 }}>
+          <div style={{ marginTop: 8, background: '#111', padding: 8, borderRadius: 4, maxHeight: 300, overflowY: 'auto' }}>
             <div style={{ fontSize: 12, color: '#ccc' }}>Output:</div>
-            <pre style={{ whiteSpace: 'pre-wrap', color: '#e6e6e6' }}>{result.output}</pre>
+            <pre style={{ whiteSpace: 'pre-wrap', color: '#e6e6e6', margin: 0 }}>{result.output}</pre>
             {result.error ? (
-              <div style={{ color: '#ff8080' }}>Error: {result.error}</div>
+              <div style={{ color: '#ff8080', marginTop: 8 }}>Error: {result.error}</div>
             ) : null}
           </div>
         ) : null}

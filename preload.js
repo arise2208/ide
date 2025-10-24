@@ -5,6 +5,10 @@ const validChannels = [
   'file:read',
   'file:write',
   'file:list',
+  'file:create',
+  'file:delete',
+  'file:rename',
+  'file:cut',
   'dialog:openFolder',
   'tests:load',
   'tests:save'
@@ -108,5 +112,29 @@ contextBridge.exposeInMainWorld('api', {
   setTargetFolder: async (folderPath) => {
     validateChannel('set:targetFolder')
     return await ipcRenderer.invoke('set:targetFolder', folderPath)
+  },
+
+  // Create new file or directory
+  createFile: async (filePath, isDirectory = false) => {
+    validateChannel('file:create')
+    return await ipcRenderer.invoke('file:create', { filePath, isDirectory })
+  },
+
+  // Delete file or directory
+  deleteFile: async (filePath) => {
+    validateChannel('file:delete')
+    return await ipcRenderer.invoke('file:delete', filePath)
+  },
+
+  // Rename file or directory
+  renameFile: async (oldPath, newPath) => {
+    validateChannel('file:rename')
+    return await ipcRenderer.invoke('file:rename', { oldPath, newPath })
+  },
+
+  // Cut (move) file or directory
+  cutFile: async (sourcePath, destPath) => {
+    validateChannel('file:cut')
+    return await ipcRenderer.invoke('file:cut', { sourcePath, destPath })
   }
 })

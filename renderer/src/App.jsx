@@ -9,6 +9,8 @@ export default function App() {
   const [files, setFiles] = useState(null)
   const [rootPath, setRootPath] = useState(null)
   const [selectedFile, setSelectedFile] = useState(null)
+  const [openFiles, setOpenFiles] = useState([])
+  const [fileContents, setFileContents] = useState({})
   const [importedProblem, setImportedProblem] = useState(null)
   const [pendingImport, setPendingImport] = useState(null)
   const [loading, setLoading] = useState(false)
@@ -22,6 +24,14 @@ export default function App() {
       if (response.data && response.data.rootPath) setRootPath(response.data.rootPath)
     }
   }, [])
+
+  const handleRefreshFiles = useCallback(async () => {
+    if (!rootPath) return;
+    const response = await window.api.listFiles(rootPath);
+    if (response.success) {
+      setFiles(response.data);
+    }
+  }, [rootPath])
 
   // Listen for Competitive Companion payloads (received but not created)
   useEffect(() => {
@@ -58,24 +68,26 @@ export default function App() {
     try {
       setLoading(true);
       setError(null);
-      
-      // First read the file
-      const response = await window.api.readFile(path);
-      if (!response.success) {
-        throw new Error(response.error || 'Failed to read file');
+
+      if (!openFiles.includes(path)) {
+        const response = await window.api.readFile(path);
+        if (!response.success) {
+          throw new Error(response.error || 'Failed to read file');
+        }
+
+        setOpenFiles(prev => [...prev, path]);
+        setFileContents(prev => ({ ...prev, [path]: response.data }));
       }
-      
-      // Only update state if read was successful
+
       setSelectedFile(path);
-      setValue(response.data);
-      // Set the target folder for imports to the selected file's directory
+      setValue(fileContents[path] || '');
+
       try {
         const normalized = String(path).replace(/\\/g, '/')
         const idx = normalized.lastIndexOf('/')
         const dir = idx !== -1 ? normalized.slice(0, idx) : '.'
         await window.api.setTargetFolder(dir)
       } catch (e) {
-        // ignore errors from setting target folder
       }
       console.log('File loaded:', path);
     } catch (err) {
@@ -84,7 +96,35 @@ export default function App() {
     } finally {
       setLoading(false);
     }
-  }, [])
+  }, [openFiles, fileContents])
+
+  const handleCloseTab = useCallback((path) => {
+    setOpenFiles(prev => {
+      const newOpenFiles = prev.filter(f => f !== path);
+      if (selectedFile === path && newOpenFiles.length > 0) {
+        const newSelected = newOpenFiles[newOpenFiles.length - 1];
+        setSelectedFile(newSelected);
+        setValue(fileContents[newSelected] || '');
+      } else if (newOpenFiles.length === 0) {
+        setSelectedFile(null);
+        setValue('');
+      }
+      return newOpenFiles;
+    });
+
+    setFileContents(prev => {
+      const newContents = { ...prev };
+      delete newContents[path];
+      return newContents;
+    });
+  }, [selectedFile, fileContents])
+
+  const handleEditorChange = useCallback((newValue) => {
+    setValue(newValue);
+    if (selectedFile) {
+      setFileContents(prev => ({ ...prev, [selectedFile]: newValue }));
+    }
+  }, [selectedFile])
 
   const openImported = useCallback(async () => {
     // This function is no longer used for pre-created imports
@@ -121,20 +161,47 @@ export default function App() {
                   files={files}
                   onSelect={handleFileSelect}
                   selectedPath={selectedFile}
+                  onRefresh={handleRefreshFiles}
                 />
               )}
             </div>
           </ResizablePanel>
 
           <div className="editor-container">
+            {openFiles.length > 0 && (
+              <div className="tabs">
+                {openFiles.map(filePath => {
+                  const fileName = filePath.split('/').pop();
+                  return (
+                    <div
+                      key={filePath}
+                      className={`tab ${selectedFile === filePath ? 'tab-active' : ''}`}
+                      onClick={() => {
+                        setSelectedFile(filePath);
+                        setValue(fileContents[filePath] || '');
+                      }}
+                    >
+                      <span>{fileName}</span>
+                      <button
+                        className="tab-close"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleCloseTab(filePath);
+                        }}
+                      >
+                        ×
+                      </button>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
             <div className="editor">
               <Editor
                 key={selectedFile}
                 filePath={selectedFile}
                 initialValue={value}
-                onChange={(newValue) => {
-                  setValue(newValue);
-                }}
+                onChange={handleEditorChange}
                 onSave={async (content) => {
                   if (!selectedFile) {
                     setError('No file selected');

@@ -122,11 +122,32 @@
   font-family: 'Consolas', 'Monaco', monospace;
   margin-bottom: 8px;
   transition: border-color 0.15s ease;
+  resize: vertical;
+  min-height: 80px;
+  max-height: 300px;
+  overflow-y: auto;
 }
 
 .input:focus {
   outline: none;
   border-color: #007acc;
+}
+
+.input::-webkit-scrollbar {
+  width: 8px;
+}
+
+.input::-webkit-scrollbar-track {
+  background: #1e1e1e;
+}
+
+.input::-webkit-scrollbar-thumb {
+  background: #424242;
+  border-radius: 4px;
+}
+
+.input::-webkit-scrollbar-thumb:hover {
+  background: #4f4f4f;
 }
 
 .label {
