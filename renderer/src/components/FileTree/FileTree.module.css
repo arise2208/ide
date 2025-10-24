@@ -1,0 +1,63 @@
+.fileTree {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  user-select: none;
+  padding: 8px;
+  color: #e1e1e1;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  padding: 4px 8px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.item:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.itemSelected {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+.folder {
+  font-weight: 500;
+}
+
+.file {
+  color: #e1e1e1;
+}
+
+.file.cpp {
+  color: #42a5f5;
+}
+
+.icon {
+  width: 16px;
+  height: 16px;
+  margin-right: 8px;
+  flex-shrink: 0;
+}
+
+.arrow {
+  width: 16px;
+  height: 16px;
+  margin-right: 4px;
+  transition: transform 0.15s ease;
+  opacity: 0.7;
+}
+
+.arrowExpanded {
+  transform: rotate(90deg);
+}
+
+.children {
+  padding-left: 24px;
+}
+
+.meta {
+  margin-left: auto;
+  font-size: 0.85em;
+  opacity: 0.7;
+}

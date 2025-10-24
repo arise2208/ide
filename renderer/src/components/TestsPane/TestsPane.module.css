@@ -1,0 +1,111 @@
+.testsPane {
+  background: #1e1e1e;
+  color: #e1e1e1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  padding: 6px 8px;
+  background: #252526;
+  border-bottom: 1px solid #3c3c3c;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.testList {
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px;
+}
+
+.testItem {
+  background: #252526;
+  border: 1px solid #3c3c3c;
+  border-radius: 4px;
+  margin-bottom: 6px;
+  padding: 6px;
+}
+
+.compactRow {
+  padding: 6px 8px;
+  display: flex;
+  align-items: center;
+}
+
+.testHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.testName {
+  font-weight: 500;
+}
+
+.controls {
+  display: flex;
+  gap: 8px;
+}
+
+.button {
+  background: #0e639c;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 3px 6px;
+  cursor: pointer;
+  font-size: 11px;
+}
+
+.button:hover {
+  background: #1177bb;
+}
+
+.button.delete {
+  background: #c62828;
+}
+
+.button.delete:hover {
+  background: #d32f2f;
+}
+
+.input {
+  background: #3c3c3c;
+  border: 1px solid #555;
+  color: #e1e1e1;
+  padding: 6px;
+  border-radius: 4px;
+  width: 100%;
+  margin-bottom: 6px;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.label {
+  display: block;
+  margin-bottom: 4px;
+  color: #cccccc;
+  font-size: 12px;
+}
+
+.empty {
+  text-align: center;
+  padding: 20px;
+  color: #666;
+}
+
+.addButton {
+  background: #2ea043;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 3px 8px;
+  cursor: pointer;
+}
+
+.addButton:hover {
+  background: #3fb950;
+}

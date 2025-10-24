@@ -1,0 +1,21 @@
+{
+  "name": "cp-ide-electron",
+  "version": "0.1.0",
+  "private": true,
+  "main": "main.js",
+  "scripts": {
+    "postinstall": "electron-builder install-app-deps || true",
+    "start": "concurrently \"npm:dev:electron\" \"npm:dev:renderer\"",
+    "dev:electron": "wait-on tcp:5173 && electron .",
+    "dev:renderer": "cd renderer && npm run dev",
+    "build": "cd renderer && npm run build && electron-builder",
+    "lint": "echo \"No lint configured\""
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.0",
+    "electron": "^26.0.0",
+    "electron-builder": "^24.8.0",
+    "wait-on": "^7.0.1"
+  },
+  "dependencies": {}
+}
