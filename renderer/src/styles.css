@@ -165,3 +165,65 @@ body, html, #root {
 .compilation-error::-webkit-scrollbar-thumb:hover {
   background: #4f4f4f;
 }
+
+.tabs {
+  display: flex;
+  background: #2d2d30;
+  border-bottom: 1px solid #2b2b2b;
+  overflow-x: auto;
+  overflow-y: hidden;
+  flex-shrink: 0;
+  height: 35px;
+}
+
+.tabs::-webkit-scrollbar {
+  height: 0;
+}
+
+.tab {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 12px;
+  height: 35px;
+  background: #2d2d30;
+  color: #969696;
+  cursor: pointer;
+  border-right: 1px solid #2b2b2b;
+  font-size: 13px;
+  transition: background-color 0.1s, color 0.1s;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.tab:hover {
+  background: #1e1e1e;
+  color: #cccccc;
+}
+
+.tab-active {
+  background: #1e1e1e;
+  color: #ffffff;
+  border-bottom: 2px solid #007acc;
+}
+
+.tab-close {
+  background: transparent;
+  border: none;
+  color: inherit;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0;
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 3px;
+  transition: background-color 0.1s;
+}
+
+.tab-close:hover {
+  background: rgba(255, 255, 255, 0.1);
+}

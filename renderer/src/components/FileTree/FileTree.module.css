@@ -79,3 +79,46 @@
   color: #858585;
   font-weight: 400;
 }
+
+.contextMenu {
+  position: fixed;
+  background: #252526;
+  border: 1px solid #454545;
+  border-radius: 4px;
+  padding: 4px 0;
+  min-width: 180px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  font-size: 13px;
+}
+
+.menuItem {
+  padding: 6px 20px;
+  cursor: pointer;
+  transition: background-color 0.1s;
+  color: #cccccc;
+}
+
+.menuItem:hover {
+  background-color: #2a2d2e;
+}
+
+.menuDivider {
+  height: 1px;
+  background: #454545;
+  margin: 4px 0;
+}
+
+.renameInput {
+  background: #1e1e1e;
+  border: 1px solid #007acc;
+  color: #cccccc;
+  padding: 2px 4px;
+  font-size: 13px;
+  outline: none;
+  flex: 1;
+}
+
+.cutItem {
+  opacity: 0.5;
+}
