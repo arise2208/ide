@@ -1,0 +1,56 @@
+.panel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.resizer {
+  position: absolute;
+  z-index: 100;
+  background: transparent;
+  transition: background-color 0.15s ease;
+}
+
+.resizer:hover,
+.resizer.resizing {
+  background: #007acc;
+}
+
+.resizer.horizontal {
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  cursor: ew-resize;
+}
+
+.resizer.vertical {
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 4px;
+  cursor: ns-resize;
+}
+
+.resizer.horizontal:hover::before,
+.resizer.horizontal.resizing::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -2px;
+  right: -2px;
+  background: #007acc;
+}
+
+.resizer.vertical:hover::before,
+.resizer.vertical.resizing::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -2px;
+  bottom: -2px;
+  background: #007acc;
+}

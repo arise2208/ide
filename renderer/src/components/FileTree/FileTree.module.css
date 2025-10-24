@@ -1,24 +1,32 @@
 .fileTree {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   user-select: none;
-  padding: 8px;
-  color: #e1e1e1;
+  padding: 4px 0;
+  color: #cccccc;
+  font-size: 13px;
 }
 
 .item {
   display: flex;
   align-items: center;
-  padding: 4px 8px;
+  padding: 4px 8px 4px 20px;
   cursor: pointer;
-  border-radius: 4px;
+  border-radius: 0;
+  height: 22px;
+  color: #cccccc;
+  transition: background-color 0.1s;
+  gap: 6px;
+  margin: 0;
+  font-size: 13px;
 }
 
 .item:hover {
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: #2a2d2e;
 }
 
 .itemSelected {
-  background-color: rgba(255, 255, 255, 0.15);
+  background-color: #37373d !important;
+  font-weight: 400;
 }
 
 .folder {
@@ -30,21 +38,29 @@
 }
 
 .file.cpp {
-  color: #42a5f5;
+  color: #569cd6;
+  font-weight: 400;
+}
+
+.item.file {
+  padding-left: 36px;
 }
 
 .icon {
   width: 16px;
   height: 16px;
-  margin-right: 8px;
   flex-shrink: 0;
+  color: #c5c5c5;
+  opacity: 0.8;
 }
 
 .arrow {
   width: 16px;
   height: 16px;
-  margin-right: 4px;
+  flex-shrink: 0;
   transition: transform 0.15s ease;
+  color: #c5c5c5;
+  margin-left: -4px;
   opacity: 0.7;
 }
 
@@ -53,11 +69,13 @@
 }
 
 .children {
-  padding-left: 24px;
+  margin-left: 0;
+  padding-left: 0;
 }
 
 .meta {
   margin-left: auto;
-  font-size: 0.85em;
-  opacity: 0.7;
+  font-size: 11px;
+  color: #858585;
+  font-weight: 400;
 }

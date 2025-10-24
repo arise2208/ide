@@ -2,6 +2,7 @@ import React, { useState, useCallback, useEffect } from 'react'
 import { FileTree } from './components/FileTree'
 import { Editor } from './components/Editor'
 import { TestsPane } from './components/TestsPane'
+import { ResizablePanel } from './components/ResizablePanel'
 
 export default function App() {
   const [value, setValue] = useState('')
@@ -104,15 +105,27 @@ export default function App() {
       </header>
       <div className="main">
         <div className="main-content">
-          <div className="sidebar">
-            {files && (
-              <FileTree
-                files={files}
-                onSelect={handleFileSelect}
-                selectedPath={selectedFile}
-              />
-            )}
-          </div>
+          <ResizablePanel
+            defaultSize={280}
+            minSize={180}
+            maxSize={500}
+            direction="horizontal"
+            className="sidebar"
+          >
+            <div className="sidebar-header">
+              <span className="sidebar-title">EXPLORER</span>
+            </div>
+            <div className="sidebar-content">
+              {files && (
+                <FileTree
+                  files={files}
+                  onSelect={handleFileSelect}
+                  selectedPath={selectedFile}
+                />
+              )}
+            </div>
+          </ResizablePanel>
+
           <div className="editor-container">
             <div className="editor">
               <Editor
@@ -131,19 +144,18 @@ export default function App() {
                   try {
                     setError(null);
                     console.log('Saving file in App:', selectedFile);
-                    
+
                     const response = await window.api.writeFile({
                       filePath: selectedFile,
                       content: content
                     });
-                    
+
                     console.log('Save response in App:', response);
-                    
+
                     if (!response.success) {
                       throw new Error(response.error || 'Failed to save file');
                     }
 
-                    // Verify the file was saved by reading it back
                     const verifyResponse = await window.api.readFile(selectedFile);
                     if (!verifyResponse.success || verifyResponse.data !== content) {
                       throw new Error('File verification failed');
@@ -159,22 +171,28 @@ export default function App() {
                 }}
               />
             </div>
-            
+
             {compileError && (
               <div className="compilation-error">
                 <div style={{ marginBottom: '4px', fontWeight: 'bold' }}>Compilation Error:</div>
                 {compileError}
               </div>
             )}
-            
+
           </div>
 
-          <div style={{ width: 360, borderLeft: '1px solid #1e1e1e', overflow: 'auto' }}>
-            <TestsPane 
-              filePath={selectedFile} 
+          <ResizablePanel
+            defaultSize={360}
+            minSize={280}
+            maxSize={800}
+            direction="horizontal"
+            className="tests-panel"
+          >
+            <TestsPane
+              filePath={selectedFile}
               onCompileError={setCompileError}
             />
-          </div>
+          </ResizablePanel>
         </div>
       </div>
 
